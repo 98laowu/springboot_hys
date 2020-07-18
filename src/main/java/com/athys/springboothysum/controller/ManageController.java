@@ -8,19 +8,19 @@ import com.athys.springboothysum.service.UserService;
 import com.athys.springboothysum.util.Result;
 import com.athys.springboothysum.util.StatusCode;
 import com.google.gson.Gson;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-
+@Api("跳转主页面")
 @Slf4j
 @RestController
-@RequestMapping("/usermanage")
+@RequestMapping("/manage")
 @CrossOrigin
-public class UserController {
+public class ManageController {
     @Autowired
     private UserService userService;
     @Autowired
@@ -31,18 +31,19 @@ public class UserController {
     private RolePermissionService rolePermissionService;
     /**
      * 加载主页
-     * @param userJson
+     * @param id
      * @return
      */
-    @RequestMapping("/index")
-    public Result<RolePermission> index(String userJson) {
-        Gson gson = new Gson();
-        User jsonToUser = gson.fromJson(userJson, User.class);
-        if(jsonToUser!=null){
+    @ApiOperation(value = "加载主页", httpMethod = "GET")
+    @GetMapping("/index/{id}")
+    public Result<RolePermission> index(@PathVariable String id) {
+//        Gson gson = new Gson();
+//        User jsonToUser = gson.fromJson(userJson, User.class);
+        if(id!=null&&id!=""){
             //查找登录用户角色下的所有权限
-            List<User> user= userService.findList(jsonToUser);
+            User user= userService.findById(id);
             UserRole userRole=new UserRole();
-            userRole.setUserId(user.get(0).getUserId());
+            userRole.setUserId(user.getUserId());
             List<UserRole> allUserRole= userRoleService.findList(userRole);
             List<RolePermission> allRolePermissionsList = new ArrayList<>();
             for (int i=0;i<allUserRole.size();i++) {
@@ -51,7 +52,12 @@ public class UserController {
                 List<RolePermission> rolePermissions=rolePermissionService.findList(rolePermission);
                 allRolePermissionsList.addAll(rolePermissions);
             }
-            if(allRolePermissionsList.size()<=0)
+            List<Permission> permissionList = new ArrayList<>();
+            for(RolePermission p:allRolePermissionsList){
+                Permission per=  permissionService.findById(p.getPermissionId());
+                permissionList.add(per);
+            }
+            if(permissionList.size()<=0)
             {
                 return new Result(false, StatusCode.ERROR, "您没有任何权限!");
             }

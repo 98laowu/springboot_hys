@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.persistence.Column;
 import java.util.List;
 
 /****
@@ -24,36 +25,7 @@ public class PermissionServiceImpl implements PermissionService {
     private PermissionMapper permissionMapper;
 
 
-    /**
-     * Permission条件+分页查询
-     * @param permission 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public PageInfo<Permission> findPage(Permission permission, int page, int size){
-        //分页
-        PageHelper.startPage(page,size);
-        //搜索条件构建
-        Example example = createExample(permission);
-        //执行搜索
-        return new PageInfo<Permission>(permissionMapper.selectByExample(example));
-    }
 
-    /**
-     * Permission分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageInfo<Permission> findPage(int page, int size){
-        //静态分页
-        PageHelper.startPage(page,size);
-        //分页查询
-        return new PageInfo<Permission>(permissionMapper.selectAll());
-    }
 
     /**
      * Permission条件查询
@@ -85,6 +57,14 @@ public class PermissionServiceImpl implements PermissionService {
             // 权限名称
             if(!StringUtils.isEmpty(permission.getPermissionName())){
                     criteria.andEqualTo("permissionName",permission.getPermissionName());
+            }
+            // 父节点ID
+            if(!StringUtils.isEmpty(permission.getParentId())){
+                criteria.andEqualTo("parentId",permission.getParentId());
+            }
+            // 权限类型
+            if(!StringUtils.isEmpty(permission.getCategory())){
+                criteria.andEqualTo("category",permission.getCategory());
             }
             // 备注
             if(!StringUtils.isEmpty(permission.getRemark())){

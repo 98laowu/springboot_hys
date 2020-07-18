@@ -1,10 +1,14 @@
 package com.athys.springboothysum.controller;
 
 import com.athys.springboothysum.entity.Permission;
+import com.athys.springboothysum.entity.User;
 import com.athys.springboothysum.service.PermissionService;
 import com.athys.springboothysum.util.Result;
 import com.athys.springboothysum.util.StatusCode;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +19,8 @@ import java.util.List;
  * @Description:
  * @Date 2019/6/14 0:18
  *****/
-
+@Api("权限模块")
+@Slf4j
 @RestController
 @RequestMapping("/permission")
 @CrossOrigin
@@ -24,41 +29,15 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 
-    /***
-     * Permission分页条件搜索实现
-     * @param permission
-     * @param page
-     * @param size
-     * @return
-     */
-    @PostMapping(value = "/search/{page}/{size}" )
-    public Result<PageInfo> findPage(@RequestBody(required = false)  Permission permission, @PathVariable int page, @PathVariable int size){
-        //调用PermissionService实现分页条件查询Permission
-        PageInfo<Permission> pageInfo = permissionService.findPage(permission, page, size);
-        return new Result(true, StatusCode.OK,"查询成功",pageInfo);
-    }
-
-    /***
-     * Permission分页搜索实现
-     * @param page:当前页
-     * @param size:每页显示多少条
-     * @return
-     */
-    @GetMapping(value = "/search/{page}/{size}" )
-    public Result<PageInfo> findPage(@PathVariable int page, @PathVariable int size){
-        //调用PermissionService实现分页查询Permission
-        PageInfo<Permission> pageInfo = permissionService.findPage(page, size);
-        return new Result<PageInfo>(true,StatusCode.OK,"查询成功",pageInfo);
-    }
 
     /***
      * 多条件搜索Permission数据
      * @param permission
      * @return
      */
+    @ApiOperation(value = "多条件搜索Permission数据", httpMethod = "POST")
     @PostMapping(value = "/search" )
     public Result<List<Permission>> findList(@RequestBody(required = false)  Permission permission){
-        //调用PermissionService实现条件查询Permission
         List<Permission> list = permissionService.findList(permission);
         return new Result<List<Permission>>(true,StatusCode.OK,"查询成功",list);
     }
@@ -68,7 +47,8 @@ public class PermissionController {
      * @param id
      * @return
      */
-    @DeleteMapping(value = "/{id}" )
+    @ApiOperation(value = "根据ID删除Permission数据", httpMethod = "DELETE")
+    @DeleteMapping(value = "delete/{id}" )
     public Result delete(@PathVariable String id){
         //调用PermissionService实现根据主键删除
         permissionService.delete(id);
@@ -81,12 +61,12 @@ public class PermissionController {
      * @param id
      * @return
      */
-    @PutMapping(value="/{id}")
+    @ApiOperation(value = "修改Permission数据", httpMethod = "POST")
+    @PostMapping(value="update/{id}")
     public Result update(@RequestBody Permission permission, @PathVariable String id){
-        //设置主键值
-        permission.setPermissionId(id);
-        //调用PermissionService实现修改Permission
-        permissionService.update(permission);
+        Permission curr= permissionService.findById(id);
+        curr.whichIsNotEmpty(permission);
+        permissionService.update(curr);
         return new Result(true,StatusCode.OK,"修改成功");
     }
 
@@ -95,9 +75,9 @@ public class PermissionController {
      * @param permission
      * @return
      */
-    @PostMapping
+    @ApiOperation(value = "新增Permission数据", httpMethod = "POST")
+    @PostMapping("/add")
     public Result add(@RequestBody Permission permission){
-        //调用PermissionService实现添加Permission
         permissionService.add(permission);
         return new Result(true,StatusCode.OK,"添加成功");
     }
@@ -107,6 +87,7 @@ public class PermissionController {
      * @param id
      * @return
      */
+    @ApiOperation(value = "根据ID查询Permission数据", httpMethod = "GET")
     @GetMapping("/{id}")
     public Result<Permission> findById(@PathVariable String id){
         //调用PermissionService实现根据主键查询Permission
@@ -118,6 +99,7 @@ public class PermissionController {
      * 查询Permission全部数据
      * @return
      */
+    @ApiOperation(value = "查询Permission全部数据", httpMethod = "GET")
     @GetMapping
     public Result<List<Permission>> findAll(){
         //调用PermissionService实现查询所有Permission

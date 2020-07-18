@@ -25,36 +25,6 @@ public class RolePermissionServiceImpl implements RolePermissionService {
     private RolePermissionMapper rolePermissionMapper;
 
 
-    /**
-     * RolePermission条件+分页查询
-     * @param rolePermission 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public PageInfo<RolePermission> findPage(RolePermission rolePermission, int page, int size){
-        //分页
-        PageHelper.startPage(page,size);
-        //搜索条件构建
-        Example example = createExample(rolePermission);
-        //执行搜索
-        return new PageInfo<RolePermission>(rolePermissionMapper.selectByExample(example));
-    }
-
-    /**
-     * RolePermission分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageInfo<RolePermission> findPage(int page, int size){
-        //静态分页
-        PageHelper.startPage(page,size);
-        //分页查询
-        return new PageInfo<RolePermission>(rolePermissionMapper.selectAll());
-    }
 
     /**
      * RolePermission条件查询

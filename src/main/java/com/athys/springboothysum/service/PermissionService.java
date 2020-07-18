@@ -14,23 +14,6 @@ import java.util.List;
 public interface PermissionService {
 
     /***
-     * Permission多条件分页查询
-     * @param permission
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<Permission> findPage(Permission permission, int page, int size);
-
-    /***
-     * Permission分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<Permission> findPage(int page, int size);
-
-    /***
      * Permission多条件搜索方法
      * @param permission
      * @return

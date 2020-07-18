@@ -1,4 +1,6 @@
 package com.athys.springboothysum.entity;
+import org.springframework.util.StringUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.String;
@@ -17,10 +19,32 @@ public class Permission implements Serializable{
     @Column(name = "permission_name")
 	private String permissionName;//权限名称
 
+	@Column(name = "parent_id")
+	private String parentId;//父节点ID
+
+	@Column(name = "category")
+	private String category;//权限类型
+
     @Column(name = "remark")
 	private String remark;//备注
 
 
+
+	public String getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	//get方法
 	public String getPermissionId() {
@@ -50,12 +74,36 @@ public class Permission implements Serializable{
 		this.remark = remark;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Permission{" +
 				"permissionId='" + permissionId + '\'' +
 				", permissionName='" + permissionName + '\'' +
+				", parentId='" + parentId + '\'' +
+				", category='" + category + '\'' +
 				", remark='" + remark + '\'' +
 				'}';
+	}
+
+	public void whichIsNotEmpty(Permission permission) {
+		if (permission != null) {
+			// 权限名称
+			if (!StringUtils.isEmpty(permission.getPermissionName())) {
+				this.setPermissionName(permission.getPermissionName());
+			}
+			// 父节点ID
+			if (!StringUtils.isEmpty(permission.getParentId())) {
+				this.setParentId(permission.getParentId());
+			}
+			// 权限类型
+			if (!StringUtils.isEmpty(permission.getCategory())) {
+				this.setCategory(permission.getCategory());
+			}
+			// 备注
+			if (!StringUtils.isEmpty(permission.getRemark())) {
+				this.setRemark(permission.getRemark());
+			}
+		}
 	}
 }

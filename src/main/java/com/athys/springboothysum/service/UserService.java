@@ -13,22 +13,6 @@ import java.util.List;
 @Service
 public interface UserService {
 
-    /***
-     * User多条件分页查询
-     * @param user
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<User> findPage(User user, int page, int size);
-
-    /***
-     * User分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<User> findPage(int page, int size);
 
     /***
      * User多条件搜索方法

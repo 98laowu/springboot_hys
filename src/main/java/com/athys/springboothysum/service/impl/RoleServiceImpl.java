@@ -24,36 +24,7 @@ public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
 
 
-    /**
-     * Role条件+分页查询
-     * @param role 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public PageInfo<Role> findPage(Role role, int page, int size){
-        //分页
-        PageHelper.startPage(page,size);
-        //搜索条件构建
-        Example example = createExample(role);
-        //执行搜索
-        return new PageInfo<Role>(roleMapper.selectByExample(example));
-    }
 
-    /**
-     * Role分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageInfo<Role> findPage(int page, int size){
-        //静态分页
-        PageHelper.startPage(page,size);
-        //分页查询
-        return new PageInfo<Role>(roleMapper.selectAll());
-    }
 
     /**
      * Role条件查询

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.persistence.Column;
 import java.util.List;
 
 /****
@@ -24,36 +25,6 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
 
-    /**
-     * User条件+分页查询
-     * @param user 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public PageInfo<User> findPage(User user, int page, int size){
-        //分页
-        PageHelper.startPage(page,size);
-        //搜索条件构建
-        Example example = createExample(user);
-        //执行搜索
-        return new PageInfo<User>(userMapper.selectByExample(example));
-    }
-
-    /**
-     * User分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageInfo<User> findPage(int page, int size){
-        //静态分页
-        PageHelper.startPage(page,size);
-        //分页查询
-        return new PageInfo<User>(userMapper.selectAll());
-    }
 
     /**
      * User条件查询
@@ -117,6 +88,14 @@ public class UserServiceImpl implements UserService {
             // 头像路径
             if(!StringUtils.isEmpty(user.getImagepath())){
                     criteria.andEqualTo("imagepath",user.getImagepath());
+            }
+            // 邮箱
+            if(!StringUtils.isEmpty(user.getEmail())){
+                criteria.andEqualTo("email",user.getEmail());
+            }
+            // 是否在线
+            if(!StringUtils.isEmpty(user.getIsonline())){
+                criteria.andEqualTo("isonline",user.getIsonline());
             }
         }
         return example;

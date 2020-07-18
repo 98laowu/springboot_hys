@@ -24,36 +24,6 @@ public class UserRoleServiceImpl implements UserRoleService {
     private UserRoleMapper userRoleMapper;
 
 
-    /**
-     * UserRole条件+分页查询
-     * @param userRole 查询条件
-     * @param page 页码
-     * @param size 页大小
-     * @return 分页结果
-     */
-    @Override
-    public PageInfo<UserRole> findPage(UserRole userRole, int page, int size){
-        //分页
-        PageHelper.startPage(page,size);
-        //搜索条件构建
-        Example example = createExample(userRole);
-        //执行搜索
-        return new PageInfo<UserRole>(userRoleMapper.selectByExample(example));
-    }
-
-    /**
-     * UserRole分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    @Override
-    public PageInfo<UserRole> findPage(int page, int size){
-        //静态分页
-        PageHelper.startPage(page,size);
-        //分页查询
-        return new PageInfo<UserRole>(userRoleMapper.selectAll());
-    }
 
     /**
      * UserRole条件查询

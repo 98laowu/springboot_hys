@@ -14,23 +14,6 @@ import java.util.List;
 public interface RolePermissionService {
 
     /***
-     * RolePermission多条件分页查询
-     * @param rolePermission
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<RolePermission> findPage(RolePermission rolePermission, int page, int size);
-
-    /***
-     * RolePermission分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<RolePermission> findPage(int page, int size);
-
-    /***
      * RolePermission多条件搜索方法
      * @param rolePermission
      * @return

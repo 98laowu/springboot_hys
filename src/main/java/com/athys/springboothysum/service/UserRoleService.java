@@ -13,22 +13,6 @@ import java.util.List;
 @Service
 public interface UserRoleService {
 
-    /***
-     * UserRole多条件分页查询
-     * @param userRole
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<UserRole> findPage(UserRole userRole, int page, int size);
-
-    /***
-     * UserRole分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<UserRole> findPage(int page, int size);
 
     /***
      * UserRole多条件搜索方法

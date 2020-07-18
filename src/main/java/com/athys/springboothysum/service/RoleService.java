@@ -14,23 +14,6 @@ import java.util.List;
 public interface RoleService {
 
     /***
-     * Role多条件分页查询
-     * @param role
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<Role> findPage(Role role, int page, int size);
-
-    /***
-     * Role分页查询
-     * @param page
-     * @param size
-     * @return
-     */
-    PageInfo<Role> findPage(int page, int size);
-
-    /***
      * Role多条件搜索方法
      * @param role
      * @return
